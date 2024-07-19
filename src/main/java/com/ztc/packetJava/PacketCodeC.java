@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.ztc.packetJava.Command.LOGIN_REQUEST;
+import static com.ztc.packetJava.Command.LOGIN_RESPONSE;
+
 /**
  * @ClassName PacketCodeC
  * @Description TODO
@@ -15,20 +18,26 @@ import java.util.Objects;
  */
 public class PacketCodeC {
     private static final int MAGIC_NUMBER = 0x12345678;
-
+    public static final PacketCodeC INSTANCE = new PacketCodeC();
     private final Map<Byte, Serializer> serializerMap = new HashMap<>();
     private final Map<Byte, Class<? extends Packet>> packetTypeMap = new HashMap<>();
-    public ByteBuf encode(Packet packet){
+
+    private PacketCodeC() {
+        packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
+    }
+
+    public ByteBuf encode(ByteBufAllocator alloc,Packet packet){
         //1.創建 ByteBuf 對象
-        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
+        ByteBuf byteBuf = alloc.DEFAULT.ioBuffer();
         //2.序列化java對象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
         //3.實際編碼過程
-        byteBuf.writeByte(MAGIC_NUMBER);//魔數
+        byteBuf.writeInt(MAGIC_NUMBER);//魔數
         byteBuf.writeByte(packet.getVersion());//版本
         byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());//算法
         byteBuf.writeByte(packet.getCommand());//指令
-        byteBuf.writeByte(bytes.length);//二進制數據長度
+        byteBuf.writeInt(bytes.length);//二進制數據長度
         byteBuf.writeBytes(bytes);//二進制數據
 
         Serializer serializer = new JSONSerializer();
@@ -58,7 +67,8 @@ public class PacketCodeC {
         return null;
     }
     private Class<? extends Packet> getRequestType(byte command){
-        return LoginRequestPacket.class;
+
+        return packetTypeMap.get(command);
     }
 
     private Serializer  getSerializer(byte serializeAlgorithm){

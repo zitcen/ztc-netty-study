@@ -33,7 +33,9 @@ public class FirstClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        //读取数据
         ByteBuf byteBuf = (ByteBuf) msg;
+        //展示数据
         System.out.println(new Date() + ":客户端读取到的数据 ->" + byteBuf.toString(Charset.forName("UTF-8")));
     }
 

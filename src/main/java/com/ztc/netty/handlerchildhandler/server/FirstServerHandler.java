@@ -25,6 +25,7 @@ public class FirstServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println(new Date() + ":服务端读取到的数据 ->" + byteBuf.toString(Charset.forName("UTF-8")));
 
         // 返回数据到客户端
+        System.out.println(new Date() + "：服务端写出数据");
         //获取数据
         ByteBuf buffer = getBuffer(ctx);
         //写数据
