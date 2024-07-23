@@ -1,9 +1,11 @@
 package com.ztc.nettylogin;
 
+import com.ztc.message.MessageResponsePacket;
 import com.ztc.packetJava.LoginRequestPacket;
 import com.ztc.packetJava.LoginResponsePacket;
 import com.ztc.packetJava.Packet;
 import com.ztc.packetJava.PacketCodeC;
+import com.ztc.utils.LoginUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -45,10 +47,14 @@ public class LoginClientHandler extends ChannelInboundHandlerAdapter {
         if(packet instanceof LoginResponsePacket){
             LoginResponsePacket responsePacket = (LoginResponsePacket) packet;
             if(responsePacket.isSuccess()){
+                LoginUtil.makeAsLogin(ctx.channel());
                 System.out.println(new Date() + "：客户端登录成功");
             }else{
                 System.out.println(new Date() + ":客户端登录失败");
             }
+        }else if(packet instanceof LoginResponsePacket){
+            MessageResponsePacket messageResponsePacket = (MessageResponsePacket)packet;
+            System.out.println(new Date() + ":收到服务端的消息：" + messageResponsePacket.getMsg());
         }else{
 
         }

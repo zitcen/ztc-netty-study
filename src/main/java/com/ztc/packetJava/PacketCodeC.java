@@ -1,5 +1,7 @@
 package com.ztc.packetJava;
 
+import com.ztc.message.MessageRequestPacket;
+import com.ztc.message.MessageResponsePacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 
@@ -7,8 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.ztc.packetJava.Command.LOGIN_REQUEST;
-import static com.ztc.packetJava.Command.LOGIN_RESPONSE;
+import static com.ztc.packetJava.Command.*;
 
 /**
  * @ClassName PacketCodeC
@@ -25,6 +26,8 @@ public class PacketCodeC {
     private PacketCodeC() {
         packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
         packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
     }
 
     public ByteBuf encode(ByteBufAllocator alloc,Packet packet){
