@@ -2,8 +2,10 @@ package com.ztc.netty.handlerchildhandler.server;
 
 import com.ztc.netty.in.InboundHandlerA;
 import com.ztc.netty.in.InboundHandlerB;
+import com.ztc.netty.in.InboundHandlerC;
 import com.ztc.netty.out.OutboundHandlerA;
 import com.ztc.netty.out.OutboundHandlerB;
+import com.ztc.netty.out.OutboundHandlerC;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -26,10 +28,10 @@ public class CommunicationNettyServer {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         //处理读数据的逻辑
-                        ch.pipeline().addLast(new InboundHandlerA()).addLast(new InboundHandlerB());
+                        ch.pipeline().addLast(new InboundHandlerA()).addLast(new InboundHandlerB()).addLast(new InboundHandlerC());
                         ch.pipeline().addLast(new FirstServerHandler());
                         //处理写数据的逻辑
-                        ch.pipeline().addLast(new OutboundHandlerA()).addLast(new OutboundHandlerB());
+                        ch.pipeline().addLast(new OutboundHandlerA()).addLast(new OutboundHandlerB()).addLast(new OutboundHandlerC());
                     }
                 });
         bootstrap.bind("127.0.0.1",8000);
