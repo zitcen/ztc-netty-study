@@ -9,11 +9,12 @@ import java.net.Socket;
  * @ClassName IOServer
  * @Description TODO
  * @Author ztc
+ *
  * @Date 2024/5/12 15:20
  */
 public class IOServer {
     public static void main(String[] args) throws Exception {
-        ServerSocket server = new ServerSocket(8000);
+        ServerSocket server = new ServerSocket(4000);
 
         //接受新链接的线程
         new Thread(() -> {
